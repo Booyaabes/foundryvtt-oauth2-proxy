@@ -101,7 +101,8 @@ services:
     init: true
     volumes:
       - ${FOUNDRYVTT_DATA_PATH}:/data
-#    environment:
+    environment:
+      - CONTAINER_CACHE=/data/container_cache
 #      - FOUNDRY_RELEASE_URL=https://foundryvtt.s3.amazonaws.com/releases/9.X/FoundryVTT-9.X.zip?XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     restart: unless-stopped
     networks:
