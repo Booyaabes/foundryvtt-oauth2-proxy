@@ -1,0 +1,82 @@
+volumes:
+  keycloak_data:
+    driver: local
+  foundryvtt_data:
+    driver: local
+
+networks:
+  oauth2_proxy_network:
+  keycloak_db_network:
+
+services:
+  keycloak-db:
+    image: postgres:13.8
+    restart: unless-stopped
+    volumes:
+      - keycloak_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+    networks:
+      - keycloak_db_network
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:19.0.1
+    restart: unless-stopped
+    environment:
+      KC_HOSTNAME: keycloak.localhost
+      KC_DB_URL: jdbc:postgresql://keycloak-db/keycloak
+      KC_DB_SCHEMA: public
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_PROXY: edge
+      KC_HEALTH_ENABLED: "true"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/health/" ]
+      interval: 5s
+      timeout: 2s
+      retries: 15
+    volumes:
+      - ./foundryvtt-theme:/opt/keycloak/themes/foundryvtt-theme:ro
+    depends_on:
+      - keycloak-db
+    command:
+      - start --db=postgres
+    networks:
+      - keycloak_db_network
+
+  oauth2-proxy:
+    container_name: oauth2-proxy
+    image: quay.io/oauth2-proxy/oauth2-proxy:v7.3.0
+    command: >
+      --config /oauth2-proxy.cfg 
+      --cookie-secret ${OAUTH2_PROXY_COOKIE_SEED} 
+      --cookie-domain ${OAUTH2_PROXY_COOKIE_DOMAIN} 
+      --whitelist-domain ${OAUTH2_PROXY_WHITELIST_DOMAIN}
+      --client-id ${OAUTH2_PROXY_CLIENT_ID}
+      --client-secret ${OAUTH2_PROXY_CLIENT_SECRET}
+      --redirect-url ${OAUTH2_PROXY_REDIRECT_URL}
+      --oidc-issuer-url ${OAUTH2_PROXY_OIDC_ISSUER_URL}
+    hostname: oauth2-proxy
+    volumes:
+      - "./oauth2-proxy-keycloak.cfg:/oauth2-proxy.cfg"
+    restart: unless-stopped
+    networks:
+      - oauth2_proxy_network
+    depends_on:
+      keycloak:
+          condition: service_healthy
+
+  foundry-vtt:
+    image: felddy/foundryvtt:9
+    init: true
+    volumes:
+      - foundryvtt_data:/data
+#    environment:
+#      - FOUNDRY_RELEASE_URL=https://foundryvtt.s3.amazonaws.com/releases/9.X/FoundryVTT-9.X.zip?XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    restart: unless-stopped
+    networks:
+      - oauth2_proxy_network
