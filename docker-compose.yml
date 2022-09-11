@@ -18,6 +18,11 @@ services:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - keycloak_db_network
 
@@ -44,7 +49,8 @@ services:
     volumes:
       - ./foundryvtt-theme:/opt/keycloak/themes/foundryvtt-theme:ro
     depends_on:
-      - keycloak-db
+      keycloak-db:
+        condition: service_healthy
     command:
       - start --db=postgres
     networks:
