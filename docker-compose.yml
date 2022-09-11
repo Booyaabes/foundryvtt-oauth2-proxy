@@ -21,8 +21,8 @@ services:
       - KEYCLOAK_PUBLIC_ADDRESS=${KEYCLOAK_PUBLIC_ADDRESS}
       - FOUNDRYVTT_PUBLIC_ADDRESS=${FOUNDRYVTT_PUBLIC_ADDRESS}
     ports:
-      - "8080:80"
-      - "8443:443"
+      - "38080:80"
+      - "38443:443"
     networks:
       - reverse_proxy_network
 
