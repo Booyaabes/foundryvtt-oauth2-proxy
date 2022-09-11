@@ -1,0 +1,7 @@
+https://{$KEYCLOAK_PUBLIC_ADDRESS} {
+    reverse_proxy http://keycloak:8080
+}
+
+https://{$FOUNDRYVTT_PUBLIC_ADDRESS} {
+    reverse_proxy http://foundry-vtt:30000
+}

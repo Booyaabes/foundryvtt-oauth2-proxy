@@ -1,14 +1,31 @@
 volumes:
-  keycloak_data:
+  reverse_proxy_data:
     driver: local
-  foundryvtt_data:
+  reverse_proxy_config:
     driver: local
 
 networks:
   oauth2_proxy_network:
   keycloak_db_network:
+  reverse_proxy_network:
 
 services:
+  reverse-proxy:
+    image: caddy/caddy:2.5.2-alpine
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - reverse_proxy_data:/data
+      - reverse_proxy_config:/config
+    restart: unless-stopped
+    environment:
+      - KEYCLOAK_PUBLIC_ADDRESS=${KEYCLOAK_PUBLIC_ADDRESS}
+      - FOUNDRYVTT_PUBLIC_ADDRESS=${FOUNDRYVTT_PUBLIC_ADDRESS}
+    ports:
+      - "8080:80"
+      - "8443:443"
+    networks:
+      - reverse_proxy_network
+
   keycloak-db:
     image: postgres:13.8
     restart: unless-stopped
@@ -31,8 +48,6 @@ services:
     restart: unless-stopped
     environment:
       KC_HOSTNAME: ${KEYCLOAK_HOSTNAME}
-      KC_HOSTNAME_PORT: ${KEYCLOAK_HOSTNAME_PORT}
-      KC_HOSTNAME_ADMIN: ${KEYCLOAK_HOSTNAME}
       KC_DB_URL: jdbc:postgresql://keycloak-db/keycloak
       KC_DB_SCHEMA: public
       KC_DB_USERNAME: keycloak
@@ -56,8 +71,7 @@ services:
       - start --db=postgres
     networks:
       - keycloak_db_network
-    ports:
-      - "32122:8080"
+      - reverse_proxy_network
 
   oauth2-proxy:
     container_name: oauth2-proxy
@@ -77,8 +91,7 @@ services:
     restart: unless-stopped
     networks:
       - oauth2_proxy_network
-    ports:
-      - "33332:4180"
+      - reverse_proxy_network
     depends_on:
       keycloak:
           condition: service_healthy
