@@ -26,6 +26,7 @@ services:
     restart: unless-stopped
     environment:
       KC_HOSTNAME: ${KEYCLOAK_HOSTNAME}
+      KC_HOSTNAME_ADMIN: ${KEYCLOAK_HOSTNAME}
       KC_HOSTNAME_PORT: ${KEYCLOAK_PORT}
       KC_DB_URL: jdbc:postgresql://keycloak-db/keycloak
       KC_DB_SCHEMA: public
