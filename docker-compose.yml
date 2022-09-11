@@ -13,7 +13,7 @@ services:
     image: postgres:13.8
     restart: unless-stopped
     volumes:
-      - keycloak_data:/var/lib/postgresql/data
+      - ${KEYCLOAK_DATA_PATH}:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
@@ -48,7 +48,7 @@ services:
     networks:
       - keycloak_db_network
     ports:
-      - "32123:8080"
+      - "32122:8080"
 
   oauth2-proxy:
     container_name: oauth2-proxy
@@ -64,12 +64,12 @@ services:
       --oidc-issuer-url ${OAUTH2_PROXY_OIDC_ISSUER_URL}
     hostname: oauth2-proxy
     volumes:
-      - "./oauth2-proxy-keycloak.cfg:/oauth2-proxy.cfg"
+      - ./oauth2-proxy-keycloak.cfg:/oauth2-proxy.cfg
     restart: unless-stopped
     networks:
       - oauth2_proxy_network
     ports:
-      - "33333:4180"
+      - "33332:4180"
     depends_on:
       keycloak:
           condition: service_healthy
@@ -78,7 +78,7 @@ services:
     image: felddy/foundryvtt:9
     init: true
     volumes:
-      - foundryvtt_data:/data
+      - ${FOUNDRYVTT_DATA_PATH}:/data
 #    environment:
 #      - FOUNDRY_RELEASE_URL=https://foundryvtt.s3.amazonaws.com/releases/9.X/FoundryVTT-9.X.zip?XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     restart: unless-stopped
