@@ -3,5 +3,5 @@ https://{$KEYCLOAK_PUBLIC_ADDRESS} {
 }
 
 https://{$FOUNDRYVTT_PUBLIC_ADDRESS} {
-    reverse_proxy http://foundry-vtt:30000
+    reverse_proxy http://oauth2-proxy:4180
 }
