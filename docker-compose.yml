@@ -103,6 +103,7 @@ services:
       - ${FOUNDRYVTT_DATA_PATH}:/data
     environment:
       - CONTAINER_CACHE=/data/container_cache
+      - CONTAINER_PRESERVE_CONFIG=true
 #      - FOUNDRY_RELEASE_URL=https://foundryvtt.s3.amazonaws.com/releases/9.X/FoundryVTT-9.X.zip?XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     restart: unless-stopped
     networks:
