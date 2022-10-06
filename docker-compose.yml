@@ -11,7 +11,7 @@ networks:
 
 services:
   reverse-proxy:
-    image: caddy/caddy:2.6.0-alpine
+    image: caddy/caddy:2.6.1-alpine
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - reverse_proxy_data:/data
@@ -44,10 +44,10 @@ services:
       - keycloak_db_network
 
   keycloak:
-    image: quay.io/keycloak/keycloak:19.0.2
+    image: quay.io/keycloak/keycloak:19.0.3
     restart: unless-stopped
     environment:
-      KC_HOSTNAME: ${KEYCLOAK_HOSTNAME}
+      KC_HOSTNAME: ${KEYCLOAK_PUBLIC_ADDRESS}
       KC_DB_URL: jdbc:postgresql://keycloak-db/keycloak
       KC_DB_SCHEMA: public
       KC_DB_USERNAME: keycloak
