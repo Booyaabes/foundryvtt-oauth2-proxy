@@ -27,7 +27,7 @@ services:
       - reverse_proxy_network
 
   keycloak-db:
-    image: postgres:13.8
+    image: postgres:13.9-alpine
     restart: unless-stopped
     volumes:
       - ${KEYCLOAK_DATA_PATH}:/var/lib/postgresql/data
@@ -44,7 +44,7 @@ services:
       - keycloak_db_network
 
   keycloak:
-    image: quay.io/keycloak/keycloak:20.0.0
+    image: quay.io/keycloak/keycloak:20.0.1
     restart: unless-stopped
     environment:
       KC_HOSTNAME: ${KEYCLOAK_PUBLIC_ADDRESS}
