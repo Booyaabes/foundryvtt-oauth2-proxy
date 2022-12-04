@@ -102,7 +102,7 @@ services:
           condition: service_healthy
 
   foundry-vtt:
-    image: felddy/foundryvtt:9
+    image: felddy/foundryvtt:10
     init: true
     volumes:
       - ${FOUNDRYVTT_DATA_PATH}:/data
