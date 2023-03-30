@@ -44,7 +44,7 @@ services:
       - keycloak_db_network
 
   keycloak:
-    image: quay.io/keycloak/keycloak:20.0.3
+    image: quay.io/keycloak/keycloak:21.0.2
     restart: unless-stopped
     environment:
       KC_HOSTNAME: ${KEYCLOAK_PUBLIC_ADDRESS}
