@@ -57,11 +57,6 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       KC_PROXY: edge
       KC_HEALTH_ENABLED: "true"
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080/health/" ]
-      interval: 5s
-      timeout: 2s
-      retries: 15
     volumes:
       - ./foundryvtt-theme:/opt/keycloak/themes/foundryvtt-theme:ro
     depends_on:
