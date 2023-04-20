@@ -91,9 +91,6 @@ services:
     networks:
       - oauth2_proxy_network
       - reverse_proxy_network
-    depends_on:
-      keycloak:
-          condition: service_healthy
 
   foundry-vtt:
     image: felddy/foundryvtt:10
