@@ -11,7 +11,7 @@ networks:
 
 services:
   reverse-proxy:
-    image: caddy/caddy:2.6.4-alpine
+    image: caddy/caddy:2.7.2-alpine
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - reverse_proxy_data:/data
