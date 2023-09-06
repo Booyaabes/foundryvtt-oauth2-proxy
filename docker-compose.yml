@@ -93,7 +93,7 @@ services:
       - reverse_proxy_network
 
   foundry-vtt:
-    image: felddy/foundryvtt:10
+    image: felddy/foundryvtt:11.308
     init: true
     volumes:
       - ${FOUNDRYVTT_DATA_PATH}:/data
