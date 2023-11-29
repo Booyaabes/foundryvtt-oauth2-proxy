@@ -44,10 +44,11 @@ services:
       - keycloak_db_network
 
   keycloak:
-    image: quay.io/keycloak/keycloak:23.0.0
+    image: quay.io/keycloak/keycloak:23.0.1
     restart: unless-stopped
     environment:
       KC_HOSTNAME: ${KEYCLOAK_PUBLIC_ADDRESS}
+      KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://keycloak-db/keycloak
       KC_DB_SCHEMA: public
       KC_DB_USERNAME: keycloak
@@ -63,7 +64,7 @@ services:
       keycloak-db:
         condition: service_healthy
     command:
-      - start --db=postgres
+      - start
     networks:
       - keycloak_db_network
       - reverse_proxy_network
