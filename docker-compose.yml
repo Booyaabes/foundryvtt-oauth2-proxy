@@ -27,7 +27,7 @@ services:
       - reverse_proxy_network
 
   keycloak-db:
-    image: postgres:13.18-alpine
+    image: postgres:13.20-alpine
     restart: unless-stopped
     volumes:
       - ${KEYCLOAK_DATA_PATH}:/var/lib/postgresql/data
