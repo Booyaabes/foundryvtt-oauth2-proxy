@@ -44,7 +44,7 @@ services:
       - keycloak_db_network
 
   keycloak:
-    image: quay.io/keycloak/keycloak:26.2.0
+    image: quay.io/keycloak/keycloak:26.2.2
     restart: unless-stopped
     environment:
       KC_HOSTNAME: ${KEYCLOAK_PUBLIC_ADDRESS}
@@ -71,7 +71,7 @@ services:
       - reverse_proxy_network
 
   oauth2-proxy:
-    image: quay.io/oauth2-proxy/oauth2-proxy:v7.8.1
+    image: quay.io/oauth2-proxy/oauth2-proxy:v7.9.0
     command: >
       --config /oauth2-proxy.cfg 
       --cookie-secret ${OAUTH2_PROXY_COOKIE_SEED} 
