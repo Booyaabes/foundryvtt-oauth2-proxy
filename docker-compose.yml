@@ -11,7 +11,7 @@ networks:
 
 services:
   reverse-proxy:
-    image: caddy/caddy:2.9.1-alpine
+    image: caddy/caddy:2.10.0-alpine
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - reverse_proxy_data:/data
@@ -59,8 +59,6 @@ services:
       KC_HTTP_ENABLED: "true"
       KC_PROXY_HEADERS: "xforwarded"
       KC_HEALTH_ENABLED: "true"
-    volumes:
-      - ./foundryvtt-theme:/opt/keycloak/themes/foundryvtt-theme:ro
     depends_on:
       keycloak-db:
         condition: service_healthy
