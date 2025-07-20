@@ -69,7 +69,7 @@ services:
       - reverse_proxy_network
 
   oauth2-proxy:
-    image: quay.io/oauth2-proxy/oauth2-proxy:v7.9.0
+    image: quay.io/oauth2-proxy/oauth2-proxy:v7.10.0
     command: >
       --config /oauth2-proxy.cfg 
       --cookie-secret ${OAUTH2_PROXY_COOKIE_SEED} 
