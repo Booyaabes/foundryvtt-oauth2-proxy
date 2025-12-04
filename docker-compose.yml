@@ -95,6 +95,7 @@ services:
   foundry-vtt:
     image: felddy/foundryvtt:13.351
     init: true
+    user: "${UID}:${GID}"
     volumes:
       - ${FOUNDRYVTT_DATA_PATH}:/data
     environment:
