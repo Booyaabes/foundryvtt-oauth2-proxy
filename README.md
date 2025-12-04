@@ -20,6 +20,8 @@ OAUTH2_PROXY_REDIRECT_URL=https://fvtt.my-domain.com/oauth2/callback
 OAUTH2_PROXY_OIDC_ISSUER_URL=https://idp.my-domain.com/realms/foundryvtt
 FOUNDRYVTT_DATA_PATH=/path/to/foundryvtt/data
 FOUNDRYVTT_PUBLIC_ADDRESS=fvtt.my-domain.com
+UID=1000
+GID=1000
 ```
 
 I included a great Foundry VTT Keycloak theme coming from [here](https://github.com/patrick246/keycloak-foundryvtt-theme).
