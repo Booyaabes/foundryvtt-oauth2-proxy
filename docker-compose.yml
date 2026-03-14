@@ -11,7 +11,7 @@ networks:
 
 services:
   reverse-proxy:
-    image: caddy/caddy:2.10.2-alpine
+    image: caddy/caddy:2.11.2-alpine
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - reverse_proxy_data:/data
@@ -27,7 +27,7 @@ services:
       - reverse_proxy_network
 
   keycloak-db:
-    image: postgres:13.20-alpine
+    image: postgres:14.22-alpine
     restart: unless-stopped
     volumes:
       - ${KEYCLOAK_DATA_PATH}:/var/lib/postgresql/data
@@ -44,7 +44,7 @@ services:
       - keycloak_db_network
 
   keycloak:
-    image: quay.io/keycloak/keycloak:26.4.7
+    image: quay.io/keycloak/keycloak:26.5.5
     restart: unless-stopped
     environment:
       KC_HOSTNAME: ${KEYCLOAK_PUBLIC_ADDRESS}
@@ -69,7 +69,7 @@ services:
       - reverse_proxy_network
 
   oauth2-proxy:
-    image: quay.io/oauth2-proxy/oauth2-proxy:v7.13.0
+    image: quay.io/oauth2-proxy/oauth2-proxy:v7.14.3
     command: >
       --config /oauth2-proxy.cfg 
       --cookie-secret ${OAUTH2_PROXY_COOKIE_SEED} 
